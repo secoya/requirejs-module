@@ -1,0 +1,12 @@
+{
+  "name": "requirejs-component",
+  "description": "A component plugin for requirejs that allows bulking modules into components and override them with other modules",
+  "version": "0.0.1",
+  "author": {
+    "name": "Mikkel Schmidt",
+    "email": "msc@secoya.dk"
+  },
+  "dependencies": {
+    "express": "3.0.3",
+    "requirejs": "2.1.2"
+  },
