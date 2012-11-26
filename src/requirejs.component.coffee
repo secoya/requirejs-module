@@ -1,3 +1,6 @@
+# Copyright (c) 2012. Mikkel Schmidt (Secoya A/S).
+# Version 0.0.1
+
 define [], () ->
 	class RequireComponent
 		load: (name, req, load, config) ->
