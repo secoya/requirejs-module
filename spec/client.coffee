@@ -80,10 +80,8 @@ define [
 				instance = new TestClass()
 				for orgprop of TestClassOrg when typeof TestClassOrg[orgprop] is 'function' and orgprop isnt 'constructor'
 					instance[orgprop]()
-					console.log orgprop, instance['base' + orgprop]
 					expect(instance['base' + orgprop]).toEqual(true)
 
 				for orgprop of ExtendClass when typeof ExtendClass[orgprop] is 'function' and orgprop isnt 'constructor'
 					instance[orgprop]()
-					console.log orgprop, instance['extended' + orgprop]
 					expect(instance['extended' + orgprop]).toEqual(true)
