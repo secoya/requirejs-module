@@ -1,8 +1,7 @@
 define [], () ->
-	class DummyClass
-
+	class OverriddenDummyClass
 		foo: () ->
-			console.log 'foo'
+			console.log 'i have been overridden: foo'
 
 		bar: () ->
-			console.log 'bar'
+			console.log 'i have been overridden: bar'

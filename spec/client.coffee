@@ -1,49 +1,89 @@
 define [
-	'src/test_component/testclass'
-	"src/overrideclass"
-], (TestClassOrgPrototype, OverrideClassPrototype) ->
+	'cs!test_component/testclass'
+	"cs!overrideDummy"
+	"cs!overrideAndExtend"
+], (TestClassOrgPrototype, OverrideClassPrototype, ExtendClassPrototype) ->
 	describe "client", () ->
+
+		TestClassOrg = null
+		OverrideClass = null
+		ExtendClass = null
+
+		testHasSpy = {}
+		overrideHasSpy = {}
+		extendHasSpy = {}
+
 
 		beforeEach () ->
 			TestClassOrg = new TestClassOrgPrototype()
 			OverrideClass = new OverrideClassPrototype()
-
-			for orgprop of TestClassOrgPrototype when typeof TestClassOrgPrototype[orgprop] is 'function'
-				spyOn TestClassOrgPrototype, orgprop
-
-			for newprop of OverrideClassPrototype when typeof OverrideClassPrototype[orgprop] is 'function'
-				spyOn OverrideClassPrototype, newprop
+			ExtendClass = new ExtendClassPrototype()
 
 		it "Should fetch a module from a component", () ->
-			require ['com!test_component#testclass'], (TestClass) =>
-				expect(TestClass).toEqual(TestClassOrg)
+
+			TestClass = null
+
+			runs () ->
+				require ['com!test_component#testclass'], (module) =>
+					TestClass = module
+
+			waitsFor (() ->
+				return TestClass?
+			), "the TestClass to be loaded", 5000
+
+			runs () ->
+				expect(TestClass).toEqual(TestClassOrgPrototype)
 
 		it "Should be able to override a module with another module", () ->
-			requirejs.config
-				component:
-					overrides:
-						"test_component#testclass": 'src/overrideclass', 
+			
+			TestClass = null
 
-			require [
-				'com!test_component#testclass', 
-			], (TestClass) ->
+			runs () ->
+				requirejs.config
+					component:
+						overrides:
+							"test_component#testclass": 'cs!overrideDummy', 
+				require ['com!test_component#testclass'], (module) =>
+					TestClass = module
+
+			waitsFor (() ->
+				return TestClass?
+			), "the TestClass to be loaded", 5000
+
+			runs () ->
+				instance = new TestClass()
 				for newprop of OverrideClass
-					expect(TestClass[newprop]).toBeDefined()
+					#console.log newprop, instance[newprop]
+					expect(instance[newprop]).toBeDefined()
 				for orgprop of TestClassOrg
-					expect(TestClass[orgprop]).toBeDefined()
+					#console.log orgprop, instance[orgprop]
+					expect(instance[orgprop]).toBeDefined()
 
-		it "Should maintain the correct prototype chain", () ->
-			# We already overrode the testclass before.
-			require [
-				'com!test_component#testclass', 
-			], (TestClass) ->
-				for orgprop of TestClassOrg when typeof TestClassOrg[orgprop] is 'function'
-					TestClass[orgprop]()
-					expect(TestClassOrg[orgprop]).toHaveBeenCalled()
+		it "Should be able to extend", () ->
+			TestClass = null
 
-				for orgprop of OverrideClass when typeof OverrideClass[orgprop] is 'function'
-					TestClass[orgprop]()
-					expect(OverrideClass[orgprop]).toHaveBeenCalled()
-				
+			runs () ->
+				require.undef('com!test_component#testclass')
+				requirejs.config
+					component:
+						overrides:
+							"test_component#testclass": 'cs!overrideAndExtend', 
 
-	describe("Player", function() {
+				require ['com!test_component#testclass'], (module) =>
+					TestClass = module
+
+			waitsFor (() ->
+				return TestClass?
+			), "the TestClass to be loaded", 5000
+
+			runs () ->
+				instance = new TestClass()
+				for orgprop of TestClassOrg when typeof TestClassOrg[orgprop] is 'function' and orgprop isnt 'constructor'
+					instance[orgprop]()
+					console.log orgprop, instance['base' + orgprop]
+					expect(instance['base' + orgprop]).toEqual(true)
+
+				for orgprop of ExtendClass when typeof ExtendClass[orgprop] is 'function' and orgprop isnt 'constructor'
+					instance[orgprop]()
+					console.log orgprop, instance['extended' + orgprop]
+					expect(instance['extended' + orgprop]).toEqual(true)

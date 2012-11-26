@@ -1,15 +1,18 @@
 define [
-	'cs!spec/client'
+	'spec/client'
 ], (ClientSpec) ->
 
-	jasmineEnv = jasmine.getEnv()
-	jasmineEnv.updateInterval = 1000;
+	return {
+		run: () ->
+			jasmineEnv = jasmine.getEnv()
+			jasmineEnv.updateInterval = 1000;
 
-	htmlReporter = new jasmine.HtmlReporter()
+			htmlReporter = new jasmine.HtmlReporter()
 
-	jasmineEnv.addReporter(htmlReporter)
+			jasmineEnv.addReporter(htmlReporter)
 
-	jasmineEnv.specFilter = (spec) ->
-		htmlReporter.specFilter(spec)
+			jasmineEnv.specFilter = (spec) ->
+				htmlReporter.specFilter(spec)
 
-	jasmineEnv.execute()
+			jasmineEnv.execute()
+	}
