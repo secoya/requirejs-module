@@ -78,10 +78,5 @@ define [
 
 			runs () ->
 				instance = new TestClass()
-				for orgprop of TestClassOrg when typeof TestClassOrg[orgprop] is 'function' and orgprop isnt 'constructor'
-					instance[orgprop]()
-					expect(instance['base' + orgprop]).toEqual(true)
-
-				for orgprop of ExtendClass when typeof ExtendClass[orgprop] is 'function' and orgprop isnt 'constructor'
-					instance[orgprop]()
-					expect(instance['extended' + orgprop]).toEqual(true)
+				expect(instance instanceof TestClassOrg).toEqual(true)
+				expect(instance instanceof ExtendClass).toEqual(true)
