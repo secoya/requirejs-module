@@ -1,3 +1,4 @@
 node_modules/
 test/src
 test/spec
+*.sublime-workspace
