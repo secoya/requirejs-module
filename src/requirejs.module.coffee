@@ -1,6 +1,9 @@
-# Copyright (c) 2012. Mikkel Schmidt (Secoya A/S).
-# Version 0.0.1
-
+###*
+ * RequireJS module plugin
+ * @author Brian K. Christensen, Secoya A/S <bkc@secoya.dk>
+ * @version 0.9.1
+ * @license BSD
+###
 define [], () ->
 	class RequireModule
 
