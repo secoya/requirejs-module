@@ -6,6 +6,8 @@ var express = require('express');
 
 var app = module.exports = express();
 
+var port = 8080;
+
 // Configuration
 
 app.configure(function(){
@@ -27,6 +29,6 @@ app.get('/', function(req, res){
 	res.sendfile(__dirname + '/index.html');
 });
 
-app.listen(8080, function(){
-  console.log("express-bootstrap app running");
+app.listen(port, function(){
+  console.log("express-bootstrap app running at "+port);
 });

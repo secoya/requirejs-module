@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"build_systems": [
+		{
+			"name": "Build require compononet",
+			"cmd": "cake -r build",
+			"shell": true,
+			"working_dir": "$project_path",
+			"selector": "source.coffee, source.javascript"
+		}
+	]
+}

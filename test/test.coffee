@@ -1,6 +1,7 @@
 define [
-	'spec/client'
-], (ClientSpec) ->
+	'spec/fetch'
+	'spec/inheritance'
+], () ->
 
 	return {
 		run: () ->
