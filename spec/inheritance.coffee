@@ -1,26 +1,15 @@
 define [], () ->
-	describe "inheritance", () ->
+	describe "fetch overridden module classes, that extends their module base class: ", () ->
 
-		it "Should fetch a overridden module class, that extends a base module class", () ->
+		it "should fetch a overridden module class, that extends a base module class", () ->
 			ExtendedClass = null
 			BaseClass = null
 
-			runs () ->
-				require ['module!inheritance1#class'], (module) ->
-					ExtendedClass = module
-
-			waitsFor (() ->
-				return ExtendedClass?
-			), "Extended module class to be loaded", 5000
-
-			runs () ->
-				require ['spec/modules/inheritance1/overridables/class'], (module) ->
-					BaseClass = module
-
-			waitsFor (() ->
-				return BaseClass?
-			), "Base module class to be loaded", 5000
-
+			runs (() -> require ['module!inheritance1#class'], (module) -> ExtendedClass = module)
+			runs (() -> require ['spec/modules/inheritance1/overridables/class'], (module) -> BaseClass = module)
+			
+			waitsFor (() -> ExtendedClass?), "extended module class to be loaded", 5000
+			waitsFor (() -> BaseClass?), "base module class to be loaded", 5000
 
 			runs () ->
 				inherited = (new ExtendedClass) instanceof BaseClass
@@ -28,26 +17,15 @@ define [], () ->
 				(expect (new BaseClass).prop).toBe "base class"
 				(expect (new ExtendedClass).prop).toBe "extended class"
 
-		it "Should fetch a overridden module class, that doesn't extend the module", () ->
+		it "should fetch a overridden module class, that doesn't extend the module", () ->
 			OverriddenClass = null
 			BaseClass = null
 
-			runs () ->
-				require ['module!inheritance2#class'], (module) ->
-					OverriddenClass = module
+			runs (() -> require ['module!inheritance2#class'], (module) -> OverriddenClass = module)
+			runs (() -> require ['spec/modules/inheritance2/overridables/class'], (module) -> BaseClass = module)
 
-			waitsFor (() ->
-				return OverriddenClass?
-			), "Extended module class to be loaded", 5000
-
-			runs () ->
-				require ['spec/modules/inheritance2/overridables/class'], (module) ->
-					BaseClass = module
-
-			waitsFor (() ->
-				return BaseClass?
-			), "Base module class to be loaded", 5000
-
+			waitsFor (() ->	OverriddenClass?), "extended module class to be loaded", 5000
+			waitsFor (() -> BaseClass?), "base module class to be loaded", 5000
 
 			runs () ->
 				inherited = (new OverriddenClass) instanceof BaseClass

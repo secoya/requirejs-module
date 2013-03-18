@@ -11,6 +11,7 @@ define [], () ->
 			appBasePath: 'app'
 			moduleBasePath: 'modules'
 			relativeModuleOverridePath: 'overridables'
+			defaultModuleName: 'init'
 
 		buildMap: {}
 
@@ -24,6 +25,9 @@ define [], () ->
 			moduleConfig = config._module
 			@_extendConfig @_config, moduleConfig
 			[component, module] = name.split '#'
+
+			# the default file to load in
+			module = 'init' unless module?
 
 			componentpath = "#{config.component.path}/#{component}" if config.component?.path?
 			componentpath = config.component.paths[component] if config.component?.paths?[component]?
@@ -42,9 +46,5 @@ define [], () ->
 
 		normalize: (name, normalize) ->
 			normalize name
-
-		write: (pluginName, moduleName, write) ->
-			if typeof(@buildMap[moduleName]) != "undefined"
-				content = @buildMap[moduleName]
 
 	return new RequireModule

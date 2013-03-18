@@ -1,6 +1,7 @@
 define [
 	'spec/fetch'
 	'spec/inheritance'
+	'spec/init'
 ], () ->
 
 	return {

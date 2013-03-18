@@ -25,7 +25,8 @@
         waitSeconds: 60,
         _module: {
           moduleBasePath: 'spec/modules',
-          appBasePath: 'spec/app'
+          appBasePath: 'spec/app',
+          defaultModuleName: 'init'
         }
       });
       require(['cs!test'], function(test){test.run()});
